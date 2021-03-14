@@ -44,17 +44,19 @@ class NoteController {
         ) else ResponseEntity<Note>(HttpStatus.NOT_FOUND)
     }
 
-    /*@GetMapping(value = [""])
-    fun getByQuery(@RequestParam(name = "query") query : String): ResponseEntity<List<Note>> {
-        val ourNotes = service.getByQuery(query)
-        return if (ourNotes.size > 0L) ResponseEntity<List<Note>>(
-            ourNotes,
-            HttpStatus.OK
-        ) else ResponseEntity<List<Note>>(HttpStatus.NOT_FOUND)
+    /** @GetMapping()
+    fun getByQuery(@RequestParam("query") query : String): ResponseEntity<List<Note>> {
+    val ourNotes = service.getByQuery(query)
+    return if (ourNotes.size > 0L) ResponseEntity<List<Note>>(
+    ourNotes,
+    HttpStatus.OK
+    ) else ResponseEntity<List<Note>>(HttpStatus.NOT_FOUND)
     }*/
 
     @DeleteMapping(value = ["/{id}"])
     fun deleteById(@PathVariable id: Long): ResponseEntity<String> {
+        if (service.getById(id).id == null)
+            return ResponseEntity<String>(HttpStatus.NOT_FOUND)
         service.deleteNote(id)
         return if (service.getById(id).id == null) ResponseEntity<String>(
             HttpStatus.OK
